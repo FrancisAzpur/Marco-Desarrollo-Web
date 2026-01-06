@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Shop Trust</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <!-- Sección izquierda - Información -->
+            <div class="col-lg-6 d-none d-lg-flex bg-primary text-white p-5 flex-column justify-content-center">
+                <div class="text-center">
+                    <i class="bi bi-shop-window display-1 mb-4"></i>
+                    <h1 class="display-4 fw-bold mb-3">Shop Trust</h1>
+                    <p class="lead">Sistema de Ventas Profesional</p>
+                    <p class="mt-4">Gestiona tu negocio de manera eficiente</p>
+                </div>
+            </div>
+
+            <!-- Sección derecha - Formulario de Login -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center p-5">
+                <div class="w-100" style="max-width: 400px;">
+                    <!-- Logo para pantallas pequeñas -->
+                    <div class="text-center d-lg-none mb-4">
+                        <i class="bi bi-shop-window display-3 text-primary"></i>
+                        <h2 class="fw-bold">Shop Trust</h2>
+                    </div>
+
+                    <!-- Título -->
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Iniciar Sesión</h3>
+                        <p class="text-muted">Ingresa tus credenciales para continuar</p>
+                    </div>
+
+                    <!-- Mensajes de error/éxito -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span th:text="${error}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <!-- Formulario de Login -->
+                    <form th:action="@{/autenticar}" method="post">
+                        <!-- Campo Usuario -->
+                        <div class="mb-3">
+                            <label for="nombreUsuario" class="form-label">
+                                <i class="bi bi-person-fill"></i> Usuario
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="nombreUsuario" 
+                                   name="nombreUsuario" 
+                                   placeholder="Ingrese su usuario"
+                                   required 
+                                   autofocus>
+                        </div>
+
+                        <!-- Campo Contraseña -->
+                        <div class="mb-3">
+                            <label for="contrasena" class="form-label">
+                                <i class="bi bi-lock-fill"></i> Contraseña
+                            </label>
+                            <div class="input-group">
+                                <input type="password" 
+                                       class="form-control form-control-lg" 
+                                       id="contrasena" 
+                                       name="contrasena" 
+                                       placeholder="Ingrese su contraseña"
+                                       required>
+                                <button class="btn btn-outline-secondary" 
+                                        type="button" 
+                                        id="togglePassword">
+                                    <i class="bi bi-eye-fill" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Recordarme -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="recordarme" name="remember-me">
+                            <label class="form-check-label" for="recordarme">
+                                Recordarme
+                            </label>
+                        </div>
+
+                        <!-- Botón de Login -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                Iniciar Sesión
+                            </button>
+                        </div>
+
+                        <!-- Enlace de registro -->
+                        <div class="text-center">
+                            <p class="mb-0">
+                                ¿No tienes cuenta? 
+                                <a th:href="@{/registro}" class="text-decoration-none fw-bold">
+                                    Regístrate aquí
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- Información de acceso (solo para desarrollo) -->
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <small class="text-muted">
+                            <strong>Usuarios de prueba:</strong><br>
+                            Admin: <code>admin</code> / <code>admin123</code><br>
+                            Empleado: <code>empleado</code> / <code>empleado123</code>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script para mostrar/ocultar contraseña -->
+    <script th:src="@{/javascript/login.js}"></script>
+</body>
+</html>

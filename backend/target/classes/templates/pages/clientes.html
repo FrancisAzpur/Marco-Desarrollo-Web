@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - Shop Trust</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/inicio}">
+                <i class="bi bi-shop-window me-2"></i>Shop Trust
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/inicio}"><i class="bi bi-house-fill"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/ventas}"><i class="bi bi-cart-fill"></i> Ventas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/productos}"><i class="bi bi-box-seam"></i> Productos</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/clientes}"><i class="bi bi-people-fill"></i> Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/categorias}"><i class="bi bi-folder"></i> Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/proveedores}"><i class="bi bi-building"></i> Proveedores</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span sec:authentication="name">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill"></i> Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-people-fill text-primary"></i> Gestión de Clientes</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente" onclick="nuevoCliente()">
+                        <i class="bi bi-plus-circle"></i> Nuevo Cliente
+                    </button>
+                </div>
+
+                <!-- Buscador -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" id="buscarCliente" class="form-control" placeholder="Buscar por nombre o documento...">
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filtroEstado" class="form-select">
+                                    <option value="all">Todos los estados</option>
+                                    <option value="true" selected>Solo Activos</option>
+                                    <option value="false">Solo Inactivos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="cargarClientes()" class="btn btn-info w-100">
+                                    <i class="bi bi-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Clientes -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Documento</th>
+                                        <th>Teléfono</th>
+                                        <th>Correo</th>
+                                        <th>Dirección</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaClientes">
+                                    <tr>
+                                        <td colspan="8" class="text-center">Cargando clientes...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cliente -->
+    <div class="modal fade" id="modalCliente" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="tituloModal">Nuevo Cliente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCliente">
+                        <input type="hidden" id="idCliente">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nombre Completo *</label>
+                                <input type="text" class="form-control" id="nombreCompleto" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Tipo Documento *</label>
+                                <select class="form-select" id="tipoDocumento" required>
+                                    <option value="DNI">DNI</option>
+                                    <option value="RUC">RUC</option>
+                                    <option value="CE">Carnet Extranjería</option>
+                                    <option value="PASAPORTE">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Documento *</label>
+                                <input type="text" class="form-control" id="documentoIdentidad" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correoElectronico">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Dirección</label>
+                                <textarea class="form-control" id="direccion" rows="2"></textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="activo" checked>
+                                    <label class="form-check-label" for="activo">Cliente Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCliente()">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let modalCliente;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            modalCliente = new bootstrap.Modal(document.getElementById('modalCliente'));
+            cargarClientes();
+        });
+
+        async function cargarClientes() {
+            try {
+                const filtro = document.getElementById('filtroEstado').value;
+                let url = filtro === 'all' ? '/clientes/api' : '/clientes/api/activos';
+                
+                const response = await fetch(url);
+                const clientes = await response.json();
+                
+                mostrarClientes(clientes);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('tablaClientes').innerHTML = 
+                    '<tr><td colspan="8" class="text-center text-danger">Error al cargar clientes</td></tr>';
+            }
+        }
+
+        function mostrarClientes(clientes) {
+            const tbody = document.getElementById('tablaClientes');
+            
+            if (clientes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No hay clientes registrados</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = clientes.map(cliente => `
+                <tr>
+                    <td>${cliente.idCliente}</td>
+                    <td>${cliente.nombreCompleto}</td>
+                    <td>${cliente.tipoDocumento}: ${cliente.documentoIdentidad}</td>
+                    <td>${cliente.telefono || '-'}</td>
+                    <td>${cliente.correoElectronico || '-'}</td>
+                    <td>${cliente.direccion || '-'}</td>
+                    <td>
+                        <span class="badge ${cliente.activo ? 'bg-success' : 'bg-danger'}">
+                            ${cliente.activo ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editarCliente(${cliente.idCliente})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="eliminarCliente(${cliente.idCliente})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function nuevoCliente() {
+            document.getElementById('tituloModal').textContent = 'Nuevo Cliente';
+            document.getElementById('formCliente').reset();
+            document.getElementById('idCliente').value = '';
+            document.getElementById('activo').checked = true;
+        }
+
+        async function editarCliente(id) {
+            try {
+                const response = await fetch(`/clientes/api/${id}`);
+                const cliente = await response.json();
+                
+                document.getElementById('tituloModal').textContent = 'Editar Cliente';
+                document.getElementById('idCliente').value = cliente.idCliente;
+                document.getElementById('nombreCompleto').value = cliente.nombreCompleto;
+                document.getElementById('tipoDocumento').value = cliente.tipoDocumento;
+                document.getElementById('documentoIdentidad').value = cliente.documentoIdentidad;
+                document.getElementById('telefono').value = cliente.telefono || '';
+                document.getElementById('correoElectronico').value = cliente.correoElectronico || '';
+                document.getElementById('direccion').value = cliente.direccion || '';
+                document.getElementById('activo').checked = cliente.activo;
+                
+                modalCliente.show();
+            } catch (error) {
+                alert('Error al cargar el cliente');
+            }
+        }
+
+        async function guardarCliente() {
+            const id = document.getElementById('idCliente').value;
+            const cliente = {
+                nombreCompleto: document.getElementById('nombreCompleto').value,
+                tipoDocumento: document.getElementById('tipoDocumento').value,
+                documentoIdentidad: document.getElementById('documentoIdentidad').value,
+                telefono: document.getElementById('telefono').value,
+                correoElectronico: document.getElementById('correoElectronico').value,
+                direccion: document.getElementById('direccion').value,
+                activo: document.getElementById('activo').checked
+            };
+
+            try {
+                const url = id ? `/clientes/api/${id}` : '/clientes/api';
+                const method = id ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cliente)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    modalCliente.hide();
+                    cargarClientes();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Error al guardar el cliente');
+            }
+        }
+
+        async function eliminarCliente(id) {
+            if (!confirm('¿Está seguro de eliminar este cliente?')) return;
+
+            try {
+                const response = await fetch(`/clientes/api/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    cargarClientes();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Error al eliminar el cliente');
+            }
+        }
+
+        // Búsqueda en tiempo real
+        document.getElementById('buscarCliente').addEventListener('input', function() {
+            const termino = this.value.toLowerCase();
+            const filas = document.querySelectorAll('#tablaClientes tr');
+            
+            filas.forEach(fila => {
+                const texto = fila.textContent.toLowerCase();
+                fila.style.display = texto.includes(termino) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

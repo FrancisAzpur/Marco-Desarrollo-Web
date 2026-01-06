@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías - Shop Trust</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/inicio}">
+                <i class="bi bi-shop-window me-2"></i>Shop Trust
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/inicio}"><i class="bi bi-house-fill"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/ventas}"><i class="bi bi-cart-fill"></i> Ventas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/productos}"><i class="bi bi-box-seam"></i> Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/clientes}"><i class="bi bi-people-fill"></i> Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/categorias}"><i class="bi bi-folder"></i> Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/proveedores}"><i class="bi bi-building"></i> Proveedores</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span sec:authentication="name">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-folder text-primary"></i> Gestión de Categorías</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCategoria" onclick="nuevaCategoria()">
+                        <i class="bi bi-plus-circle"></i> Nueva Categoría
+                    </button>
+                </div>
+
+                <!-- Tabla de Categorías -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaCategorias">
+                                    <tr><td colspan="5" class="text-center">Cargando categorías...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Categoría -->
+    <div class="modal fade" id="modalCategoria" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="tituloModal">Nueva Categoría</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCategoria">
+                        <input type="hidden" id="idCategoria">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="nombreCategoria" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="activo" checked>
+                            <label class="form-check-label" for="activo">Categoría Activa</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCategoria()">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let modalCategoria;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            modalCategoria = new bootstrap.Modal(document.getElementById('modalCategoria'));
+            cargarCategorias();
+        });
+
+        async function cargarCategorias() {
+            try {
+                const response = await fetch('/categorias/api');
+                const categorias = await response.json();
+                
+                const tbody = document.getElementById('tablaCategorias');
+                tbody.innerHTML = categorias.map(cat => `
+                    <tr>
+                        <td>${cat.idCategoria}</td>
+                        <td>${cat.nombreCategoria}</td>
+                        <td>${cat.descripcion || '-'}</td>
+                        <td><span class="badge ${cat.activo ? 'bg-success' : 'bg-danger'}">${cat.activo ? 'Activo' : 'Inactivo'}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editarCategoria(${cat.idCategoria})"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarCategoria(${cat.idCategoria})"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                document.getElementById('tablaCategorias').innerHTML = 
+                    '<tr><td colspan="5" class="text-center text-danger">Error al cargar categorías</td></tr>';
+            }
+        }
+
+        function nuevaCategoria() {
+            document.getElementById('formCategoria').reset();
+            document.getElementById('idCategoria').value = '';
+            document.getElementById('activo').checked = true;
+        }
+
+        async function editarCategoria(id) {
+            const response = await fetch(`/categorias/api/${id}`);
+            const categoria = await response.json();
+            
+            document.getElementById('idCategoria').value = categoria.idCategoria;
+            document.getElementById('nombreCategoria').value = categoria.nombreCategoria;
+            document.getElementById('descripcion').value = categoria.descripcion || '';
+            document.getElementById('activo').checked = categoria.activo;
+            modalCategoria.show();
+        }
+
+        async function guardarCategoria() {
+            const id = document.getElementById('idCategoria').value;
+            const categoria = {
+                nombreCategoria: document.getElementById('nombreCategoria').value,
+                descripcion: document.getElementById('descripcion').value,
+                activo: document.getElementById('activo').checked
+            };
+
+            const url = id ? `/categorias/api/${id}` : '/categorias/api';
+            const method = id ? 'PUT' : 'POST';
+            
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(categoria)
+            });
+
+            const data = await response.json();
+            alert(data.message);
+            
+            if (data.success) {
+                modalCategoria.hide();
+                cargarCategorias();
+            }
+        }
+
+        async function eliminarCategoria(id) {
+            if (!confirm('¿Eliminar categoría?')) return;
+
+            const response = await fetch(`/categorias/api/${id}`, { method: 'DELETE' });
+            const data = await response.json();
+            alert(data.message);
+            cargarCategorias();
+        }
+    </script>
+</body>
+</html>
