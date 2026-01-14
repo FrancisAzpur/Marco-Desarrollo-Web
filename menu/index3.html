@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercial Robinson - Electrodomésticos y Hogar</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- AOS para animaciones al scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --beige: #FDFBF7;
+            --dark-blue: #0d1b2a;
+            --medium-blue: #1b263b;
+            --light-blue: #415a77;
+            --accent-orange: #e07a5f;
+            --accent-orange-dark: #c95e4a;
+            --text-dark: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--beige);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--beige);
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(253, 251, 247, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            color: #8d5524 !important;
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: #5c4033 !important;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-orange) !important;
+        }
+
+        /* Hero con degradado y animación */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 50%, var(--light-blue) 100%);
+            min-height: 90vh;
+            color: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-explore {
+            background: linear-gradient(45deg, var(--accent-orange), #ff9a80);
+            border: none;
+            font-weight: 700;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(224, 122, 95, 0.5);
+            transition: all 0.4s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-explore:hover {
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(224, 122, 95, 0.7);
+            background: linear-gradient(45deg, #ff9a80, var(--accent-orange));
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Productos */
+        .product-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .card-img-top {
+            transform: scale(1.12);
+        }
+
+        footer {
+            background: linear-gradient(to right, var(--dark-blue), var(--medium-blue));
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="70">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Comercial Robinson</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Hogar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Electrodomésticos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart fs-4"></i>Carrito (0)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 hero-content animate__animated animate__fadeInLeft">
+                    <h1>TU HOGAR IDEAL<br>COMIENZA AQUÍ</h1>
+                    <p class="lead mb-5">Encuentra los mejores electrodomésticos y artículos para el hogar con calidad
+                        premium y precios irresistibles.</p>
+                    <a href="#productos" class="btn btn-explore">EXPLORAR CATÁLOGO</a>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <img src="img/Moderno.jpg" alt="Cocina Moderna" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Carrusel-->
+    <section id="hero" class="hero-carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="img/refrigeradora_2.jpg" class="d-block w-100" alt="Refrigerador">
+                    <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInDown">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/lavadora_2.webp" class="d-block w-100" alt="Lavadora">
+                    <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInDown">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/smart_tv_2.webp" class="d-block w-100" alt="TV">
+                    <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInDown">
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+    <!-- Productos destacados -->
+    <section id="productos" class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold" style="color: #8d5524;" data-aos="fade-up">
+            Productos Destacados
+        </h2>
+        <div class="row g-4">
+            <!-- Tarjeta 1 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card product-card h-100">
+                    <div class="image-container">
+                        <img src="img/refrigerador.webp" 
+                             class="card-img-top" 
+                             alt="Refrigerador No Frost 420L">
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title">Refrigerador No Frost 420L</h5>
+                        <p class="text-muted flex-grow-1">Eficiencia A++</p>
+                        <h4 class="fw-bold text-danger mb-3">S/ 2,899</h4>
+                        <button class="btn btn-outline-primary mt-auto">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta 2 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card product-card h-100">
+                    <div class="image-container">
+                        <img src="img/lavadora_inverter.webp" 
+                             class="card-img-top" 
+                             alt="Lavadora 10kg Inverter">
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title">Lavadora 10kg Inverter</h5>
+                        <p class="text-muted flex-grow-1">Silenciosa y eficiente</p>
+                        <h4 class="fw-bold text-danger mb-3">S/ 1,799</h4>
+                        <button class="btn btn-outline-primary mt-auto">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card product-card h-100">
+                    <div class="image-container">
+                        <img src="img/tv_oled_55.avif" 
+                             class="card-img-top" 
+                             alt="Smart TV OLED 55'">
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title">Smart TV OLED 55"</h5>
+                        <p class="text-muted flex-grow-1">4K UHD + HDR</p>
+                        <h4 class="fw-bold text-danger mb-3">S/ 4,499</h4>
+                        <button class="btn btn-outline-primary mt-auto">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Inicio -->
+                <div class="col-md-3 footer-section">
+                    <h5>Inicio</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#accesorios">Accesorios</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Productos -->
+                <div class="col-md-3 footer-section">
+                    <h5>Productos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#hogar">Hogar</a></li>
+                        <li><a href="#electrodomesticos">Electrodomésticos</a></li>
+                        <li><a href="#ofertas">Ofertas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Social Media -->
+                <div class="col-md-3 footer-section">
+                    <h5>Social media</h5>
+                    <div>
+                        <a href="https://facebook.com" class="social-icon" title="Facebook"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com" class="social-icon" title="Instagram"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://twitter.com" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+    
+                <!-- Pago con método -->
+                <div class="col-md-3 footer-section">
+                    <h5>Pago con método</h5>
+                    <div>
+                        <div class="payment-icon">VISA</div>
+                        <div class="payment-icon">MC</div>
+                        <div class="payment-icon">DISC</div>
+                        <div class="payment-icon">PP</div>
+                        <div class="payment-icon">AE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <footer class="text-center text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Comercial Robinson. Todos los derechos reservados.</p>
+            <div>
+                <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+</body>
+</html>
