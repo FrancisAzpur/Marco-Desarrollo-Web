@@ -156,7 +156,7 @@ public class VentaService {
      */
     private String generarNumeroVenta() {
         LocalDateTime ahora = LocalDateTime.now();
-        String prefijo = String.format("VEN-%04d%02d%02d-", 
+        String prefijo = "VEN-%04d%02d%02d-".formatted(
                 ahora.getYear(), ahora.getMonthValue(), ahora.getDayOfMonth());
         
         // Buscar el último número del día
@@ -166,7 +166,7 @@ public class VentaService {
         );
         
         int numero = ventasHoy.size() + 1;
-        return prefijo + String.format("%04d", numero);
+        return prefijo + "%04d".formatted(numero);
     }
 
     /**
