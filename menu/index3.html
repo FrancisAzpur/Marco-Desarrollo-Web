@@ -128,6 +128,7 @@
             overflow: hidden;
             transition: all 0.5s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
         }
 
         .product-card:hover {
@@ -135,12 +136,46 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
         }
 
+        /* Contenedor de imagen para evitar recorte */
+        .image-container {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
         .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Las imágenes se mantienen completas sin recortar */
             transition: transform 0.6s ease;
         }
 
         .product-card:hover .card-img-top {
-            transform: scale(1.12);
+            transform: scale(1.1);
+        }
+
+        /* Carrusel - Mejorar visualización de imágenes */
+        .carousel-item {
+            height: 500px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Hero imagen */
+        .hero img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         footer {
@@ -161,13 +196,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Hogar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Electrodomésticos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#hero">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="templates/electrodomesticos.html">Electrodomésticos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
                     <li class="nav-item ms-3">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart fs-4"></i>Carrito (0)</a>
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i>Carrito (0)</a>
                     </li>
                 </ul>
             </div>
@@ -182,7 +216,8 @@
                     <h1>TU HOGAR IDEAL<br>COMIENZA AQUÍ</h1>
                     <p class="lead mb-5">Encuentra los mejores electrodomésticos y artículos para el hogar con calidad
                         premium y precios irresistibles.</p>
-                    <a href="#productos" class="btn btn-explore">EXPLORAR CATÁLOGO</a>
+                    <a href="templates/electrodomesticos.html" class="btn btn-explore me-3">VER ELECTRODOMÉSTICOS</a>
+                    <a href="#productos" class="btn btn-outline-light px-4 py-3" style="border-radius: 50px; font-weight: 600;">EXPLORAR CATÁLOGO</a>
                 </div>
                 <div class="col-lg-5 d-none d-lg-block">
                     <img src="img/Moderno.jpg" alt="Cocina Moderna" class="img-fluid">
@@ -282,6 +317,14 @@
                 </div>
             </div>
         </div>
+        <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+            <a href="templates/electrodomesticos.html" class="btn btn-lg px-5" 
+               style="background: linear-gradient(45deg, var(--accent-orange), #ff9a80); 
+                      color: white; border: none; border-radius: 50px; 
+                      font-weight: 700; box-shadow: 0 8px 25px rgba(224, 122, 95, 0.5);">
+                VER TODOS LOS ELECTRODOMÉSTICOS <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
     </div>
 </section>
     <!-- Footer -->
@@ -302,9 +345,8 @@
                 <div class="col-md-3 footer-section">
                     <h5>Productos</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#hogar">Hogar</a></li>
-                        <li><a href="#electrodomesticos">Electrodomésticos</a></li>
-                        <li><a href="#ofertas">Ofertas</a></li>
+                        <li><a href="templates/electrodomesticos.html">Electrodomésticos</a></li>
+                        <li><a href="#productos">Productos Destacados</a></li>
                         <li><a href="#contacto">Contacto</a></li>
                     </ul>
                 </div>
