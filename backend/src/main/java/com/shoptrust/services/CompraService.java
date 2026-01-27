@@ -164,7 +164,7 @@ public class CompraService {
      */
     private String generarNumeroCompra() {
         LocalDateTime ahora = LocalDateTime.now();
-        String prefijo = String.format("COM-%04d%02d%02d-", 
+        String prefijo = "COM-%04d%02d%02d-".formatted(
                 ahora.getYear(), ahora.getMonthValue(), ahora.getDayOfMonth());
         
         // Buscar el último número del día
@@ -174,7 +174,7 @@ public class CompraService {
         );
         
         int numero = comprasHoy.size() + 1;
-        return prefijo + String.format("%04d", numero);
+        return prefijo + "%04d".formatted(numero);
     }
 
     /**
