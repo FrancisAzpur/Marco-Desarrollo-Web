@@ -12,60 +12,149 @@ body {
 /* Header */
 header {
     background-color: #f5e6d3 !important;
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 14px 0;
+    border-bottom: 3px solid #1e3a5f;
+    box-shadow: inset 0 -1px 0 rgba(30,58,95,0.2);
 }
 
+
 .navbar-brand {
-    font-size: 24px;
-    font-weight: bold;
-    color: #c85a17 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.45);
+}
+
+
+.navbar-brand img {
+    height: 48px;
+    width: auto;
+}
+
+
+.brand-text {
+    font-weight: 800;
+    color: #c85a17;
     font-style: italic;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand:hover {
+    background: rgba(255, 255, 255, 0.65);
+}
+
+.navbar-nav {
+    gap: 28px;              /* más separación */
+    margin-right: 40px;
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: #2c3e50 !important;
-    font-weight: 500;
-    font-size: 14px;
-    transition: color 0.3s;
+    font-size: 16px;        /* ⬆ antes 14px */
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    position: relative;
+}
+
+
+.navbar-light .navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background-color: #c85a17;
+    transition: width 0.3s ease;
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
     color: #c85a17 !important;
 }
 
+.navbar-light .navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
+
 /* Hero Banner */
 .hero {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2c5aa0 100%);
-    color: white;
-    padding: 80px 20px;
-    text-align: left;
     position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    padding-left: 80px;
     overflow: hidden;
+    background-image:
+        linear-gradient(#1e3a5f, #1e3a5f),
+        url("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136");
+    background-size: 35% 100%, 65% 100%;
+    background-position: left top, right 30%;
+    background-repeat: no-repeat;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 35%;
+    background-color: #1e3a5f;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 520px;
+    color: #ffffff;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 30%;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(30,58,95,1) 0%,
+        rgba(30,58,95,0.7) 45%,
+        rgba(30,58,95,0.3) 65%,
+        rgba(30,58,95,0) 100%
+    );
+    z-index: 2;
+}
+
+.hero .container-fluid,
+.hero .row,
+.hero h1,
+.hero .hero-btn {
+    position: relative;
+    z-index: 3;
 }
 
 .hero h1 {
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 1.2;
-    margin-bottom: 30px;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 28px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: #ffffff;
+    
 }
-
 .hero-btn {
-    display: inline-block;
     background-color: #c85a17;
-    color: white;
-    padding: 15px 35px;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
+    color: #ffffff;
+    padding: 16px 44px;
+    border-radius: 6px;
+    font-weight: 700;
     text-transform: uppercase;
     font-size: 14px;
+    letter-spacing: 0.6px;
     transition: background-color 0.3s, transform 0.2s;
-    border: none;
-    cursor: pointer;
 }
 
 .hero-btn:hover {
@@ -73,16 +162,11 @@ header {
     transform: translateY(-2px);
 }
 
-.hero-image img {
-    max-width: 100%;
-    height: auto;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
-}
-
 /* Productos Destacados */
 .productos-section {
     background-color: #f5e6d3;
     padding: 80px 20px;
+    transform: translateY(-3px);
 }
 
 .section-title {
@@ -111,15 +195,21 @@ header {
 }
 
 .producto-imagen {
-    width: 150px;
-    height: 150px;
-    background-color: #c85a17;
-    border-radius: 50%;
-    margin: 0 auto 20px;
+    width: 100%;
+    height: 180px;
+    background-color: #f8f8f8;
+    border-radius: 6px;
+    margin-bottom: 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 60px;
+}
+
+.producto-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 .producto-nombre {
@@ -149,6 +239,8 @@ header {
     border: none;
     cursor: pointer;
     width: 100%;
+    margin-top: 10px;
+    letter-spacing: 0.6px;
 }
 
 .producto-btn:hover {
@@ -157,17 +249,22 @@ header {
 
 /* Footer */
 footer {
-    background-color: #1e3a5f;
+    background: linear-gradient(
+        to bottom,
+        #1b3556 0%,
+        #1e3a5f 40%,
+        #162c46 100%
+    );
     color: white;
-    padding: 60px 20px 30px;
+    padding: 70px 20px 30px;
+    border-top: 4px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-section h5 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
 }
 
 .footer-section a {
@@ -180,6 +277,61 @@ footer {
 .footer-section a:hover {
     color: #c85a17;
 }
+
+.footer-section ul li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.footer-section ul li::before {
+    content: "▸";
+    color: #c85a17;
+    font-size: 12px;
+}
+
+.footer-section .social-icon {
+    margin-top: 8px;
+}
+
+.footer-section > div {
+    margin-top: 10px;
+}
+
+.footer-section .payment-icon {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    width: 56px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.payment-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 4px;
+    display: block;
+}
+
+.payment-icon {
+    width: 60px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.payment-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
 
 .social-icon {
     width: 40px;
